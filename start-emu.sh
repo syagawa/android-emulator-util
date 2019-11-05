@@ -1,25 +1,36 @@
 #!/bin/bash
 
 # display list
-source list.sh
+SCRIPT_DIR=$(cd $(dirname $0); pwd)
+source "$SCRIPT_DIR/list.sh"
+
+
+ANS1=0
+while true
+do
+    echo -n "Please Select A Device [index] :"
+    read ANS
+    ANS1=$ANS
+    break
+done
 
 # index
-IND=0
-if [ $# = 0 ]; then
-  IND=0
-elif [ $# = 1 ]; then
-  IND=$1
+IND=$ANS1
+
+expr $IND + 1 > /dev/null 2>&1
+RET=$?
+if [ $RET -lt 1 ]; then
+  echo "index is ${IND}"
 else
-  echo "error"
+  echo "Error! Invalid Index '$IND'"
   exit 1
 fi
-echo "index is ${IND}"
 
 # detect device
 ARR=(`$ANDROID_HOME/emulator/emulator -list-avds`)
 LEN=${#ARR[@]}
 if [ ${LEN} -lt $((${IND}+1)) ]; then
-  echo "error"
+  echo "Error! Device not found"
   exit 1
 fi
 DEV=${ARR[${IND}]}
