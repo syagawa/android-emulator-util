@@ -10,7 +10,11 @@ while true
 do
     echo -n "Please Select A Device [index] :"
     read ANS
-    ANS1=$ANS
+    if [ -z $ANS ]; then
+      ANS1=0
+    else
+      ANS1=$ANS
+    fi
     break
 done
 
